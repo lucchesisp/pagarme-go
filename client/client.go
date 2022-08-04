@@ -1,4 +1,4 @@
-package pagarme_go
+package client
 
 import "fmt"
 
