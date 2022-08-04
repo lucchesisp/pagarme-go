@@ -3,5 +3,5 @@ package client
 import "fmt"
 
 func hello() {
-	fmt.Println("Hello, world1.")
+	fmt.Println("Hello, world. - Develop")
 }
