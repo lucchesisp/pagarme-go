@@ -1,5 +1,7 @@
 package pagarme_go
 
+import "fmt"
+
 func hello() {
-	println("Hello, world.")
+	fmt.Println("Hello, world.")
 }
