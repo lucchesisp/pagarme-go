@@ -1,32 +1,63 @@
 name: pagarme-go
+
 on:
   push:
-    branches:
-      - master
-      - develop
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
 jobs:
-  test:
+  build:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - name: Run Unit Tests
-        run: go test
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.18.0'
 
-      - name: Quality Gate - Test coverage shall be above threshold
-        env:
-          TEST_COVERAGE_THRESHOLD: 0
+      - name: Install dependecies
+        run: | 
+          go version
+          go get -u golang.org/x/lint/golint
+
+      - name: Build
+        run: go build .
+
+      - name: Test With Coverage
+        run: go test -v  -coverprofile=coverage.txt -covermode=atomic ./...
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+
+      - name: Run Vet & Lint
         run: |
-          echo "Quality Gate: Checking test coverage is above threshold"
-          echo "Threshold: $TEST_COVERAGE_THRESHOLD %"
-          
-          totalCoverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
-          
-          echo "Current test coverage: $totalCoverage %"
-          
-          if (( $(echo "$totalCoverage $TEST_COVERAGE_THRESHOLD" | awk '{print ($1 > $2)}') )); then
-            echo "OK"
-          else
-            echo "Current test coverage is bellow threshold. Please add more unit."
-            echo "Failed"
-            exit 1
-          fi
+          go vet .
+          golint -set_exit_status=1 .
+
+
+
+#  test:
+#    runs-on: ubuntu-18.04
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Run Unit Tests
+#        run: go test
+#
+#      - name: Quality Gate - Test coverage shall be above threshold
+#        env:
+#          TEST_COVERAGE_THRESHOLD: 0
+#        run: |
+#          echo "Quality Gate: Checking test coverage is above threshold"
+#          echo "Threshold: $TEST_COVERAGE_THRESHOLD %"
+#
+#          totalCoverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
+#
+#          echo "Current test coverage: $totalCoverage %"
+#
+#          if (( $(echo "$totalCoverage $TEST_COVERAGE_THRESHOLD" | awk '{print ($1 > $2)}') )); then
+#            echo "OK"
+#          else
+#            echo "Current test coverage is bellow threshold. Please add more unit."
+#            echo "Failed"
+#            exit 1
+#          fi
