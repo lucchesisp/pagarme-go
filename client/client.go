@@ -1,7 +1,5 @@
 package client
 
-import "fmt"
-
-func hello() {
-	fmt.Println("Hello, world. - Develop")
+func sum(a int16, b int16) (result int16) {
+	return a + b
 }
