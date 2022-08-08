@@ -1,12 +1,21 @@
-package instance
+package pagarme
 
 import (
 	"context"
+	"fmt"
 	"github.com/lucchesisp/pagarme-go/enums/config"
 	"io/ioutil"
 	"net/http"
 	"strings"
 )
+
+type Interface interface {
+	SendRequest(ctx context.Context, connection Connection) (response string, err error)
+}
+
+type Impl struct{}
+
+var HandleService Interface = &Impl{}
 
 type Connection struct {
 	Url       string
@@ -21,8 +30,12 @@ type Instance struct {
 	SecretKey string
 }
 
-func Dial(secretKey string) *Instance {
-	return DialContext(context.Background(), secretKey)
+func Dial(secretKey string) (*Instance, error) {
+	if len(secretKey) == 0 {
+		return nil, fmt.Errorf("secretKey is empty")
+	}
+
+	return DialContext(context.Background(), secretKey), nil
 }
 
 func DialContext(ctx context.Context, secretKey string) *Instance {
@@ -33,7 +46,7 @@ func DialContext(ctx context.Context, secretKey string) *Instance {
 	}
 }
 
-func SendRequest(ctx context.Context, connection Connection) (response string, err error) {
+func (i Impl) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
 	ioPayload := strings.NewReader(connection.Payload)
 	req, reqErr := http.NewRequestWithContext(ctx, connection.Method, connection.Url, ioPayload)
 
