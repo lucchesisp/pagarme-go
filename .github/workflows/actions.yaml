@@ -5,7 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - uses: actions/setup-go@v2
         with:
           go-version: '1.18.0'
@@ -13,6 +12,10 @@ jobs:
     needs: Build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.18.0'
 
       - name: Install dependencies
         run: go mod download
@@ -20,6 +23,11 @@ jobs:
     needs: Dependency
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.18.0'
+
       - name: Run Unit Tests
         run: go test -race -covermode atomic -coverprofile=covprofile ./...
 
