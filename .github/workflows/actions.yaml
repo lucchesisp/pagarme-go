@@ -15,12 +15,18 @@ jobs:
           go-version: '1.18.0'
 
       - name: Install dependencies
-        run: | 
-          go version
-          go get -u golang.org/x/lint/golint
+        run: go mod download
 
-      - name: Test With Coverage
-        run: go test -v -coverprofile=coverage.txt -covermode=atomic ./...
+      - name: Run Unit Tests
+        run: go test -race -covermode atomic -coverprofile=covprofile ./...
+
+      - name: Install Goveralls
+        run: go install github.com/mattn/goveralls@latest
+
+      - name: Send coverage
+        env:
+          COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: goveralls -coverprofile=covprofile -service=github
 
 
 
