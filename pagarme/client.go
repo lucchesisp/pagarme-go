@@ -12,7 +12,7 @@ func (i *Instance) CreateNewClient(ctx context.Context, client *types.Client) (s
 	payloadByte, _ := json.Marshal(client)
 
 	connection := Connection{
-		Url:       i.BaseUrl + "/customers",
+		URL:       i.BaseUrl + "/customers",
 		Method:    method.POST,
 		Payload:   string(payloadByte),
 		SecretKey: i.SecretKey,

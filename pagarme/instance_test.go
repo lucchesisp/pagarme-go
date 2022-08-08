@@ -35,7 +35,7 @@ func TestDialWithSuccess(t *testing.T) {
 		t.Error("SecretKey is not equal")
 	}
 
-	if pagarme.BaseUrl != config.BASE_URL {
+	if pagarme.BaseUrl != config.BaseURL {
 		t.Error("BaseUrl is not equal")
 	}
 }

@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// Interface for the pagarme client
 type Interface interface {
 	SendRequest(ctx context.Context, connection Connection) (response string, err error)
 }
@@ -18,7 +19,7 @@ type Impl struct{}
 var HandleService Interface = &Impl{}
 
 type Connection struct {
-	Url       string
+	URL       string
 	Payload   string
 	Method    string
 	SecretKey string
@@ -41,14 +42,14 @@ func Dial(secretKey string) (*Instance, error) {
 func DialContext(ctx context.Context, secretKey string) *Instance {
 	return &Instance{
 		Context:   ctx,
-		BaseUrl:   config.BASE_URL,
+		BaseUrl:   config.BaseURL,
 		SecretKey: secretKey,
 	}
 }
 
 func (i Impl) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
 	ioPayload := strings.NewReader(connection.Payload)
-	req, reqErr := http.NewRequestWithContext(ctx, connection.Method, connection.Url, ioPayload)
+	req, reqErr := http.NewRequestWithContext(ctx, connection.Method, connection.URL, ioPayload)
 
 	if reqErr != nil {
 		return "", reqErr
