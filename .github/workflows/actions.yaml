@@ -1,15 +1,7 @@
-name: Quality
+name: Quality Gate
 on: [push, pull_request]
 jobs:
-  Build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: '1.18.0'
   Dependency:
-    needs: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,22 +9,36 @@ jobs:
         with:
           go-version: '1.18.0'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: go mod download
-  Test:
+
+      - name: Install Golint
+        run: go get -u golang.org/x/lint/golint
+  Quality:
     needs: Dependency
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.18.0'
+      - name: Run Quality Code Analysis
+        run: go vet ./...
+
+      - name: Run Golint
+        run: golint ./...
+
+      - name: Install Goveralls
+        run: go install github.com/mattn/goveralls@latest
+  Test:
+    needs: Dependency, Quality
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/setup-go@v2
         with:
           go-version: '1.18.0'
 
       - name: Run Unit Tests
         run: go test -race -covermode atomic -coverprofile=covprofile ./...
-
-      - name: Install Goveralls
-        run: go install github.com/mattn/goveralls@latest
 
       - name: Send coverage
         env:
