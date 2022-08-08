@@ -30,7 +30,7 @@ jobs:
       - name: Install Goveralls
         run: go install github.com/mattn/goveralls@latest
   Test:
-    needs: Dependency, Quality
+    needs: Dependency
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-go@v2
