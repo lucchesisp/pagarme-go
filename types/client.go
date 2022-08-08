@@ -2,6 +2,7 @@ package types
 
 import "time"
 
+// Client is a struct that holds the client information.
 type Client struct {
 	Name           string    `json:"name"`
 	Email          string    `json:"email"`
