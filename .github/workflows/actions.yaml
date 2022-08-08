@@ -1,7 +1,7 @@
 name: Quality Gate
 on: [push, pull_request]
 jobs:
-  Dependency:
+  Dependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,7 +12,7 @@ jobs:
       - name: Install Dependencies
         run: go mod download
   Quality:
-    needs: Dependency
+    needs: Dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,11 +24,11 @@ jobs:
         run: go vet ./...
 
       - name: Install Golint
-        run: go get -u golang.org/x/lint/golint
+        run: go install golang.org/x/lint/golint@latest
 
       - name: Run Golint
         run: golint ./...
-  Test:
+  Tests:
     needs: Quality
     runs-on: ubuntu-latest
     steps:
