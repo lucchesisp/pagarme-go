@@ -9,27 +9,33 @@ import (
 	"strings"
 )
 
+// Interface for the pagarme client
 type Interface interface {
 	SendRequest(ctx context.Context, connection Connection) (response string, err error)
 }
 
+// Impl is the implementation of the pagarme client
 type Impl struct{}
 
+// HandleService is the service that will handle the request
 var HandleService Interface = &Impl{}
 
+// Connection is the connection that will be used to send the request
 type Connection struct {
-	Url       string
+	URL       string
 	Payload   string
 	Method    string
 	SecretKey string
 }
 
+// Instance is the pagarme client
 type Instance struct {
 	Context   context.Context
-	BaseUrl   string
+	BaseURL   string
 	SecretKey string
 }
 
+// Dial creates a new pagarme client
 func Dial(secretKey string) (*Instance, error) {
 	if len(secretKey) == 0 {
 		return nil, fmt.Errorf("secretKey is empty")
@@ -38,17 +44,19 @@ func Dial(secretKey string) (*Instance, error) {
 	return DialContext(context.Background(), secretKey), nil
 }
 
+// DialContext creates a new pagarme client with a context
 func DialContext(ctx context.Context, secretKey string) *Instance {
 	return &Instance{
 		Context:   ctx,
-		BaseUrl:   config.BASE_URL,
+		BaseURL:   config.BaseURL,
 		SecretKey: secretKey,
 	}
 }
 
+// SendRequest sends the request to the pagarme server
 func (i Impl) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
 	ioPayload := strings.NewReader(connection.Payload)
-	req, reqErr := http.NewRequestWithContext(ctx, connection.Method, connection.Url, ioPayload)
+	req, reqErr := http.NewRequestWithContext(ctx, connection.Method, connection.URL, ioPayload)
 
 	if reqErr != nil {
 		return "", reqErr

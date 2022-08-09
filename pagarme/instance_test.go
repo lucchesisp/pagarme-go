@@ -10,7 +10,7 @@ func TestDialWithoutSecretKey(t *testing.T) {
 	pagarme, pagarmeErr := Dial(secretKey)
 
 	if pagarmeErr == nil {
-		t.Error("Expected error, got nil")
+		t.Error("Expected errors, got nil")
 	}
 
 	if pagarme != nil {
@@ -35,7 +35,7 @@ func TestDialWithSuccess(t *testing.T) {
 		t.Error("SecretKey is not equal")
 	}
 
-	if pagarme.BaseUrl != config.BASE_URL {
+	if pagarme.BaseURL != config.BaseURL {
 		t.Error("BaseUrl is not equal")
 	}
 }

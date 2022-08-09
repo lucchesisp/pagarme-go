@@ -8,16 +8,16 @@ import (
 	"testing"
 )
 
-type SendRequestMock struct {
+type CreateClientRequestMock struct {
 	handleServiceFn func(ctx context.Context, connection Connection) (response string, err error)
 }
 
-func (m SendRequestMock) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
+func (m CreateClientRequestMock) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
 	return m.handleServiceFn(ctx, connection)
 }
 
 func TestCreateNewClientWithoutAuthorization(t *testing.T) {
-	handleServiceMock := SendRequestMock{}
+	handleServiceMock := CreateClientRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "", errors.New("authorization has been denied for this request")
 	}
@@ -30,7 +30,7 @@ func TestCreateNewClientWithoutAuthorization(t *testing.T) {
 	response, responseErr := pagarme.CreateNewClient(context.Background(), &types.Client{})
 
 	if responseErr == nil {
-		t.Error("Expected error, got nil")
+		t.Error("Expected errors, got nil")
 	}
 
 	if response != "" {
@@ -39,7 +39,7 @@ func TestCreateNewClientWithoutAuthorization(t *testing.T) {
 }
 
 func TestCreateNewClientSuccess(t *testing.T) {
-	handleServiceMock := SendRequestMock{}
+	handleServiceMock := CreateClientRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "{\"id\": \"cus_eOP4preImI5V2G5K\"}", nil
 	}
