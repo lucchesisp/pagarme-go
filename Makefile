@@ -7,4 +7,4 @@ quality:
 	golint -set_exit_status ./...
 
 test:
-	go test ./pagarme/... --cover
+	go test ./pagarme/... --cover -test.paniconexit0
