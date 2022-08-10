@@ -8,6 +8,8 @@ https://camo.githubusercontent.com/915b7be44ada53c290eb157634330494ebe3e30a/6874
 [![Go Report Card](https://goreportcard.com/badge/github.com/lucchesisp/pagarme-go)](https://goreportcard.com/report/github.com/lucchesisp/pagarme-go)
 [![Coverage Status](https://coveralls.io/repos/github/lucchesisp/pagarme-go/badge.svg?branch=master)](https://coveralls.io/github/lucchesisp/pagarme-go?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Status Badge](https://img.shields.io/badge/Status-Beta-brightgreen.svg)
+
 
 A Golang library to interact with Pagar.me API.
 
