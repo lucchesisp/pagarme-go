@@ -2,23 +2,21 @@ package pagarme
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	customError "github.com/lucchesisp/pagarme-go/errors"
-	"github.com/lucchesisp/pagarme-go/types"
 	"testing"
 )
 
-type EditClientRequestMock struct {
+type GetAllClientsRequestMock struct {
 	handleServiceFn func(ctx context.Context, connection Connection) (response string, err error)
 }
 
-func (m EditClientRequestMock) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
+func (m GetAllClientsRequestMock) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
 	return m.handleServiceFn(ctx, connection)
 }
 
-func TestEditClientWithoutAuthorization(t *testing.T) {
-	handleServiceMock := EditClientRequestMock{}
+func TestGetAllClientsWithoutAuthorization(t *testing.T) {
+	handleServiceMock := GetAllClientsRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "", errors.New("authorization has been denied for this request")
 	}
@@ -28,9 +26,7 @@ func TestEditClientWithoutAuthorization(t *testing.T) {
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	clientID := "cus_eOP4preImI5V2G5K"
-
-	response, responseErr := pagarme.EditClient(context.Background(), clientID, &types.Client{})
+	response, responseErr := pagarme.GetAllClients(context.Background(), 1, 1)
 
 	if responseErr == nil {
 		t.Error("Expected errors, got nil")
@@ -50,8 +46,8 @@ func TestEditClientWithoutAuthorization(t *testing.T) {
 	}
 }
 
-func TestEditClientWithoutClientID(t *testing.T) {
-	handleServiceMock := EditClientRequestMock{}
+func TestGetAllClientsWithZeroPage(t *testing.T) {
+	handleServiceMock := GetAllClientsRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "", nil
 	}
@@ -61,9 +57,7 @@ func TestEditClientWithoutClientID(t *testing.T) {
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	clientID := ""
-
-	response, responseErr := pagarme.EditClient(context.Background(), clientID, &types.Client{})
+	response, responseErr := pagarme.GetAllClients(context.Background(), 0, 0)
 
 	if responseErr == nil {
 		t.Error("Expected errors, got nil")
@@ -75,7 +69,7 @@ func TestEditClientWithoutClientID(t *testing.T) {
 
 	expectedError := customError.Error{
 		ErrorCode:    400,
-		ErrorMessage: customError.ClientIDRequired,
+		ErrorMessage: customError.PageAndSizeRequired,
 	}
 
 	if responseErr.Error() != expectedError.Error() {
@@ -83,10 +77,10 @@ func TestEditClientWithoutClientID(t *testing.T) {
 	}
 }
 
-func TestEditClientSuccess(t *testing.T) {
-	handleServiceMock := EditClientRequestMock{}
+func TestGetAllClientsWithSuccess(t *testing.T) {
+	handleServiceMock := GetAllClientsRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
-		return "{\"id\": \"cus_eOP4preImI5V2G5K\"}", nil
+		return "{\"data\": [{\"id\": \"1\", \"name\": \"Lucca\"}]}", nil
 	}
 
 	HandleService = handleServiceMock
@@ -94,22 +88,13 @@ func TestEditClientSuccess(t *testing.T) {
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	clientID := "cus_eOP4preImI5V2G5K"
-
-	response, responseErr := pagarme.EditClient(context.Background(), clientID, &types.Client{})
+	response, responseErr := pagarme.GetAllClients(context.Background(), 1, 1)
 
 	if responseErr != nil {
-		t.Error("Expected nil, got ", responseErr)
+		t.Error("Expected no errors, got ", responseErr)
 	}
 
 	if response == "" {
 		t.Error("Expected response, got empty")
-	}
-
-	var jsonMessage json.RawMessage
-	jsonErr := json.Unmarshal([]byte(response), &jsonMessage)
-
-	if jsonErr != nil {
-		t.Error("Expected nil, got ", jsonErr)
 	}
 }

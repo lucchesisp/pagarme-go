@@ -10,14 +10,7 @@ import (
 
 // CreateNewClient create a new client entity.
 func (i *Instance) CreateNewClient(ctx context.Context, client *types.Client) (string, error) {
-	payloadByte, err := json.Marshal(client)
-
-	if err != nil {
-		return "", &errors.Error{
-			ErrorCode:    400,
-			ErrorMessage: errors.InvalidJSON,
-		}
-	}
+	payloadByte, _ := json.Marshal(client)
 
 	connection := Connection{
 		URL:       i.BaseURL + "/customers",

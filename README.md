@@ -19,8 +19,17 @@ The documentation can be found in our [Go Reference](https://pkg.go.dev/github.c
 
 This library covers the following features:
 
-- Create a new Pagar.me client
-- Edit a Pagar.me client
+[Clients]
+
+- Create new client
+- Edit client
+- Get client
+- Get all clients
+
+[Cards]
+
+- Create card
+
 
 ## How to use
 
