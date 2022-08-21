@@ -2,20 +2,24 @@ package pagarme
 
 import (
 	"context"
-	"encoding/json"
+	"fmt"
 	"github.com/lucchesisp/pagarme-go/enums/method"
 	"github.com/lucchesisp/pagarme-go/errors"
-	"github.com/lucchesisp/pagarme-go/types"
 )
 
-// CreateNewClient create a new client entity.
-func (i *Instance) CreateNewClient(ctx context.Context, client *types.Client) (string, error) {
-	payloadByte, _ := json.Marshal(client)
+// GetAllClients returns all clients with pagination
+func (i *Instance) GetAllClients(ctx context.Context, page uint64, size uint64) (string, error) {
+
+	if page == 0 || size == 0 {
+		return "", &errors.Error{
+			ErrorCode:    400,
+			ErrorMessage: errors.PageAndSizeRequired,
+		}
+	}
 
 	connection := Connection{
-		URL:       i.BaseURL + "/customers",
-		Method:    method.POST,
-		Payload:   string(payloadByte),
+		URL:       i.BaseURL + fmt.Sprintf("/customers?page=%d&size=%d", page, size),
+		Method:    method.GET,
 		SecretKey: i.SecretKey,
 	}
 
