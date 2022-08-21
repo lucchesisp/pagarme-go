@@ -53,3 +53,58 @@ This library covers the following features:
 ```bash
 go get -u github.com/lucchesisp/pagarme-go
 ```
+
+## Example: Create new client
+
+```go
+pagarme, err := pagarme.Dial("YOUR_API_SECRET")
+	
+if err != nil {
+  fmt.Println(err)
+  return
+}
+	
+client := types.Client{
+  Code:           "#00000001",
+  Name:           "Lucas Santos",
+  Email:          "lucas.santos@gmail.com",
+  DocumentNumber: "12345678909",
+  DocumentType:   "CPF",
+  Phones: types.Phone{
+    MobilePhone: types.PhoneFormat{
+      CountryCode: "55",
+      AreaCode:    "11",
+      Number:      "988888888",
+    },
+    HomePhone: types.PhoneFormat{
+      CountryCode: "55",
+      AreaCode:    "11",
+      Number:      "988888888",
+    },
+  },
+  Birthday: time.Now(),
+  Address: types.Address{
+    Country: "BR",
+    State:   "SP",
+    City:    "São Paulo",
+    Line1:   "Rua Teste",
+    ZipCode: "01311000",
+  },
+  ClientType: "individual",
+  Gender:     "male",
+  Metadata:   "",
+}
+	
+response, err := pagarme.CreateNewClient(context.Background(), &client)
+
+if err != nil {
+  fmt.Println(err)
+  return
+}
+	
+fmt.Println(response)
+```
+
+If you support this project, consider buying me a coffee ;)
+
+<a href="https://www.buymeacoffee.com/lucchesisp" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 50px !important;width: 150px !important;" ></a>
