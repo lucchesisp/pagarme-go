@@ -8,17 +8,8 @@ import (
 	"github.com/lucchesisp/pagarme-go/types"
 )
 
-// EditClient edit a client entity.
-func (i *Instance) EditClient(ctx context.Context, clientID string, client *types.Client) (string, error) {
-
-	if clientID == "" {
-		return "", &errors.Error{
-			ErrorCode:    400,
-			ErrorMessage: errors.ClientIDRequired,
-		}
-	}
-
-	payloadByte, err := json.Marshal(client)
+func (i *Instance) CreateCard(ctx context.Context, clientId string, card *types.Card) (string, error) {
+	payloadByte, err := json.Marshal(card)
 
 	if err != nil {
 		return "", &errors.Error{
@@ -28,8 +19,8 @@ func (i *Instance) EditClient(ctx context.Context, clientID string, client *type
 	}
 
 	connection := Connection{
-		URL:       i.BaseURL + "/customers/" + clientID,
-		Method:    method.PUT,
+		URL:       i.BaseURL + "/customers/" + clientId + "/cards",
+		Method:    method.POST,
 		Payload:   string(payloadByte),
 		SecretKey: i.SecretKey,
 	}
