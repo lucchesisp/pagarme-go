@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/lucchesisp/pagarme-go/enums/method"
+	"github.com/lucchesisp/pagarme-go/errors"
 )
 
 // GetAllClients returns all clients with pagination
@@ -17,7 +18,10 @@ func (i *Instance) GetAllClients(ctx context.Context, page uint64, size uint64) 
 	response, responseErr := HandleService.SendRequest(ctx, connection)
 
 	if responseErr != nil {
-		return "", responseErr
+		return "", &errors.Error{
+			ErrorCode:    500,
+			ErrorMessage: responseErr.Error(),
+		}
 	}
 
 	return response, nil

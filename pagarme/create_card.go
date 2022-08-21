@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/lucchesisp/pagarme-go/enums/method"
+	"github.com/lucchesisp/pagarme-go/errors"
 	"github.com/lucchesisp/pagarme-go/types"
 )
 
@@ -11,7 +12,10 @@ func (i *Instance) CreateCard(ctx context.Context, clientId string, card *types.
 	payloadByte, err := json.Marshal(card)
 
 	if err != nil {
-		return "", err
+		return "", &errors.Error{
+			ErrorCode:    400,
+			ErrorMessage: errors.InvalidJSON,
+		}
 	}
 
 	connection := Connection{
@@ -24,7 +28,10 @@ func (i *Instance) CreateCard(ctx context.Context, clientId string, card *types.
 	response, responseErr := HandleService.SendRequest(ctx, connection)
 
 	if responseErr != nil {
-		return "", responseErr
+		return "", &errors.Error{
+			ErrorCode:    500,
+			ErrorMessage: responseErr.Error(),
+		}
 	}
 
 	return response, nil

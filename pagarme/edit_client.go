@@ -18,7 +18,14 @@ func (i *Instance) EditClient(ctx context.Context, clientID string, client *type
 		}
 	}
 
-	payloadByte, _ := json.Marshal(client)
+	payloadByte, err := json.Marshal(client)
+
+	if err != nil {
+		return "", &errors.Error{
+			ErrorCode:    400,
+			ErrorMessage: errors.InvalidJSON,
+		}
+	}
 
 	connection := Connection{
 		URL:       i.BaseURL + "/customers/" + clientID,
