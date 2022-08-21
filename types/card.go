@@ -1,5 +1,6 @@
 package types
 
+// Card is a struct for card
 type Card struct {
 	CustomerID      string   `json:"customer_id"`
 	Number          string   `json:"number"`
