@@ -29,6 +29,23 @@ This library covers the following features:
 [Cards]
 
 - Create card
+- Read card [Pending]
+- Delete card [Pending]
+
+[Plans]
+
+- Create plan [Pending]
+- Edit plan [Pending]
+- Delete plan [Pending]
+- Get plan [Pending]
+- Get all plans [Pending]
+
+[Subscribe]
+
+- Create subscribe [Pending]
+- Create subscribe with plan [Pending]
+- Edit subscribe [Pending]
+- Cancel subscribe [Pending]
 
 
 ## How to use
