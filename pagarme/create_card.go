@@ -8,18 +8,20 @@ import (
 	"github.com/lucchesisp/pagarme-go/types"
 )
 
-func (i *Instance) CreateCard(ctx context.Context, clientId string, card *types.Card) (string, error) {
-	payloadByte, err := json.Marshal(card)
+// CreateCard create a new card.
+func (i *Instance) CreateCard(ctx context.Context, clientID string, card *types.Card) (string, error) {
 
-	if err != nil {
+	if clientID == "" {
 		return "", &errors.Error{
 			ErrorCode:    400,
-			ErrorMessage: errors.InvalidJSON,
+			ErrorMessage: errors.ClientIDRequired,
 		}
 	}
 
+	payloadByte, _ := json.Marshal(card)
+
 	connection := Connection{
-		URL:       i.BaseURL + "/customers/" + clientId + "/cards",
+		URL:       i.BaseURL + "/customers/" + clientID + "/cards",
 		Method:    method.POST,
 		Payload:   string(payloadByte),
 		SecretKey: i.SecretKey,

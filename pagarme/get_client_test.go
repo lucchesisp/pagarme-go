@@ -2,33 +2,32 @@ package pagarme
 
 import (
 	"context"
-	json2 "encoding/json"
 	"errors"
 	customError "github.com/lucchesisp/pagarme-go/errors"
-	"github.com/lucchesisp/pagarme-go/types"
 	"testing"
 )
 
-type CreateClientRequestMock struct {
+type GetClientRequestMock struct {
 	handleServiceFn func(ctx context.Context, connection Connection) (response string, err error)
 }
 
-func (m CreateClientRequestMock) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
+func (m GetClientRequestMock) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
 	return m.handleServiceFn(ctx, connection)
 }
 
-func TestCreateNewClientWithoutAuthorization(t *testing.T) {
-	handleServiceMock := CreateClientRequestMock{}
+func TestGetClientWithoutAuthorization(t *testing.T) {
+	handleServiceMock := GetClientRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "", errors.New("authorization has been denied for this request")
 	}
 
 	HandleService = handleServiceMock
 
+	clientID := "cus_eOP4preImI5V2G5K"
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	response, responseErr := pagarme.CreateNewClient(context.Background(), &types.Client{})
+	response, responseErr := pagarme.GetClient(context.Background(), clientID)
 
 	if responseErr == nil {
 		t.Error("Expected errors, got nil")
@@ -48,31 +47,25 @@ func TestCreateNewClientWithoutAuthorization(t *testing.T) {
 	}
 }
 
-func TestCreateNewClientSuccess(t *testing.T) {
-	handleServiceMock := CreateClientRequestMock{}
+func TestGetClientWithSuccess(t *testing.T) {
+	handleServiceMock := GetClientRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "{\"id\": \"cus_eOP4preImI5V2G5K\"}", nil
 	}
 
 	HandleService = handleServiceMock
 
+	clientID := "cus_eOP4preImI5V2G5K"
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	response, responseErr := pagarme.CreateNewClient(context.Background(), &types.Client{})
+	response, responseErr := pagarme.GetClient(context.Background(), clientID)
 
 	if responseErr != nil {
 		t.Error("Expected nil, got ", responseErr)
 	}
 
-	if response == "" {
-		t.Error("Expected response, got empty")
-	}
-
-	var json json2.RawMessage
-	jsonErr := json2.Unmarshal([]byte(response), &json)
-
-	if jsonErr != nil {
-		t.Error("Expected nil, got ", jsonErr)
+	if response != "{\"id\": \"cus_eOP4preImI5V2G5K\"}" {
+		t.Error("Expected {\"id\": \"cus_eOP4preImI5V2G5K\"}, got ", response)
 	}
 }
