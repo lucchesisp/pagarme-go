@@ -24,12 +24,12 @@ func TestCreateNewCardWithoutAuthorization(t *testing.T) {
 
 	HandleService = handleServiceMock
 
-	clientId := "cus_eOP4preImI5V2G5K"
+	clientID := "cus_eOP4preImI5V2G5K"
 	card := &types.Card{}
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	response, responseErr := pagarme.CreateCard(context.Background(), clientId, card)
+	response, responseErr := pagarme.CreateCard(context.Background(), clientID, card)
 
 	if responseErr == nil {
 		t.Error("Expected errors, got nil")
@@ -48,12 +48,12 @@ func TestCreateNewCardWithoutClientID(t *testing.T) {
 
 	HandleService = handleServiceMock
 
-	clientId := ""
+	clientID := ""
 	card := &types.Card{}
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	response, responseErr := pagarme.CreateCard(context.Background(), clientId, card)
+	response, responseErr := pagarme.CreateCard(context.Background(), clientID, card)
 
 	if responseErr == nil {
 		t.Error("Expected errors, got nil")
