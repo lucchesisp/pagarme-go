@@ -14,7 +14,7 @@ func (i *Instance) EditClient(ctx context.Context, clientID string, client *type
 	if clientID == "" {
 		return "", &errors.Error{
 			ErrorCode:    400,
-			ErrorMessage: errors.CustumerIDRequired,
+			ErrorMessage: errors.CustomerIDRequired,
 		}
 	}
 

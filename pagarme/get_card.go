@@ -6,6 +6,7 @@ import (
 	"github.com/lucchesisp/pagarme-go/errors"
 )
 
+// GetCard returns the card with the given cardID and customerID.
 func (i *Instance) GetCard(ctx context.Context, cardID string, customerID string) (string, error) {
 	if cardID == "" {
 		return "", &errors.Error{
@@ -17,7 +18,7 @@ func (i *Instance) GetCard(ctx context.Context, cardID string, customerID string
 	if customerID == "" {
 		return "", &errors.Error{
 			ErrorCode:    400,
-			ErrorMessage: errors.CustumerIDRequired,
+			ErrorMessage: errors.CustomerIDRequired,
 		}
 	}
 
