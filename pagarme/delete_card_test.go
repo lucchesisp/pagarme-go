@@ -7,16 +7,16 @@ import (
 	"testing"
 )
 
-type GetCardRequestMock struct {
+type DeleteCardRequestMock struct {
 	handleServiceFn func(ctx context.Context, connection Connection) (response string, err error)
 }
 
-func (m GetCardRequestMock) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
+func (m DeleteCardRequestMock) SendRequest(ctx context.Context, connection Connection) (response string, err error) {
 	return m.handleServiceFn(ctx, connection)
 }
 
-func TestGetCardWithoutAuthorization(t *testing.T) {
-	handleServiceMock := GetCardRequestMock{}
+func TestDeleteCardWithoutAuthorization(t *testing.T) {
+	handleServiceMock := DeleteCardRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "", errors.New("authorization has been denied for this request")
 	}
@@ -28,7 +28,7 @@ func TestGetCardWithoutAuthorization(t *testing.T) {
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	response, responseErr := pagarme.GetCard(context.Background(), cardID, customerID)
+	response, responseErr := pagarme.DeleteCard(context.Background(), cardID, customerID)
 
 	if responseErr == nil {
 		t.Error("Expected errors, got nil")
@@ -48,8 +48,8 @@ func TestGetCardWithoutAuthorization(t *testing.T) {
 	}
 }
 
-func TestGetCardWithoutCardID(t *testing.T) {
-	handleServiceMock := GetCardRequestMock{}
+func TestDeleteCardWithoutCardID(t *testing.T) {
+	handleServiceMock := DeleteCardRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "", nil
 	}
@@ -61,7 +61,7 @@ func TestGetCardWithoutCardID(t *testing.T) {
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	response, responseErr := pagarme.GetCard(context.Background(), cardID, customerID)
+	response, responseErr := pagarme.DeleteCard(context.Background(), cardID, customerID)
 
 	if responseErr == nil {
 		t.Error("Expected errors, got nil")
@@ -81,8 +81,8 @@ func TestGetCardWithoutCardID(t *testing.T) {
 	}
 }
 
-func TestGetCardWithoutCustomerID(t *testing.T) {
-	handleServiceMock := GetCardRequestMock{}
+func TestDeleteCardWithoutCustomerID(t *testing.T) {
+	handleServiceMock := DeleteCardRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "", nil
 	}
@@ -94,7 +94,7 @@ func TestGetCardWithoutCustomerID(t *testing.T) {
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	response, responseErr := pagarme.GetCard(context.Background(), cardID, customerID)
+	response, responseErr := pagarme.DeleteCard(context.Background(), cardID, customerID)
 
 	if responseErr == nil {
 		t.Error("Expected errors, got nil")
@@ -114,8 +114,8 @@ func TestGetCardWithoutCustomerID(t *testing.T) {
 	}
 }
 
-func TestGetCardWithSuccess(t *testing.T) {
-	handleServiceMock := GetCardRequestMock{}
+func TestDeleteCardWithSuccess(t *testing.T) {
+	handleServiceMock := DeleteCardRequestMock{}
 	handleServiceMock.handleServiceFn = func(ctx context.Context, connection Connection) (response string, err error) {
 		return "{\"status\":\"success\"}", nil
 	}
@@ -127,7 +127,7 @@ func TestGetCardWithSuccess(t *testing.T) {
 	secretKey := "secretKey"
 	pagarme, _ := Dial(secretKey)
 
-	response, responseErr := pagarme.GetCard(context.Background(), cardID, customerID)
+	response, responseErr := pagarme.DeleteCard(context.Background(), cardID, customerID)
 
 	if responseErr != nil {
 		t.Error("Expected no errors, got ", responseErr)
