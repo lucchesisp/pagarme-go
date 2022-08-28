@@ -29,7 +29,7 @@ This library covers the following features:
 [Cards]
 
 - Create card
-- Read card [Pending]
+- Read card
 - Delete card [Pending]
 
 [Plans]
