@@ -65,7 +65,7 @@ func TestCreateNewCardWithoutClientID(t *testing.T) {
 
 	expectedError := customError.Error{
 		ErrorCode:    400,
-		ErrorMessage: customError.ClientIDRequired,
+		ErrorMessage: customError.CustomerIDRequired,
 	}
 
 	if responseErr.Error() != expectedError.Error() {
