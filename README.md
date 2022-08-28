@@ -30,7 +30,7 @@ This library covers the following features:
 
 - Create card
 - Read card
-- Delete card [Pending]
+- Delete card
 
 [Plans]
 
