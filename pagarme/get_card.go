@@ -2,28 +2,28 @@ package pagarme
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/lucchesisp/pagarme-go/enums/method"
 	"github.com/lucchesisp/pagarme-go/errors"
-	"github.com/lucchesisp/pagarme-go/types"
 )
 
-// CreateCard create a new card.
-func (i *Instance) CreateCard(ctx context.Context, clientID string, card *types.Card) (string, error) {
+func (i *Instance) GetCard(ctx context.Context, cardID string, customerID string) (string, error) {
+	if cardID == "" {
+		return "", &errors.Error{
+			ErrorCode:    400,
+			ErrorMessage: errors.CardIDRequired,
+		}
+	}
 
-	if clientID == "" {
+	if customerID == "" {
 		return "", &errors.Error{
 			ErrorCode:    400,
 			ErrorMessage: errors.CustumerIDRequired,
 		}
 	}
 
-	payloadByte, _ := json.Marshal(card)
-
 	connection := Connection{
-		URL:       i.BaseURL + "/customers/" + clientID + "/cards",
-		Method:    method.POST,
-		Payload:   string(payloadByte),
+		URL:       i.BaseURL + "/customers/" + customerID + "/cards/" + cardID,
+		Method:    method.GET,
 		SecretKey: i.SecretKey,
 	}
 

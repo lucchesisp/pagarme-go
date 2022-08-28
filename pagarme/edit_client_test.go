@@ -75,7 +75,7 @@ func TestEditClientWithoutClientID(t *testing.T) {
 
 	expectedError := customError.Error{
 		ErrorCode:    400,
-		ErrorMessage: customError.ClientIDRequired,
+		ErrorMessage: customError.CustumerIDRequired,
 	}
 
 	if responseErr.Error() != expectedError.Error() {
