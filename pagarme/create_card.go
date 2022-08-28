@@ -14,7 +14,7 @@ func (i *Instance) CreateCard(ctx context.Context, clientID string, card *types.
 	if clientID == "" {
 		return "", &errors.Error{
 			ErrorCode:    400,
-			ErrorMessage: errors.ClientIDRequired,
+			ErrorMessage: errors.CustomerIDRequired,
 		}
 	}
 
