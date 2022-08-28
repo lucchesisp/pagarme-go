@@ -34,7 +34,7 @@ This library covers the following features:
 
 [Plans]
 
-- Create plan [Pending]
+- Create plan
 - Edit plan [Pending]
 - Delete plan [Pending]
 - Get plan [Pending]
