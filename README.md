@@ -43,7 +43,7 @@ This library covers the following features:
 [Subscribe]
 
 - Create subscribe [Pending]
-- Create subscribe with plan [Pending]
+- Create subscribe with plan
 - Edit subscribe [Pending]
 - Cancel subscribe [Pending]
 
