@@ -1,5 +1,6 @@
 package types
 
+// PricingScheme is a struct that represents a pricing scheme
 type PricingScheme struct {
 	SchemeType    string          `json:"scheme_type"`
 	Price         int32           `json:"price"`

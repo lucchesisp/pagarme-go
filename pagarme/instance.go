@@ -56,6 +56,7 @@ func DialContext(ctx context.Context, secretKey string) *Instance {
 	}
 }
 
+// DialWithoutContext creates a new pagarme client without context
 func DialWithoutContext(secretKey string) *Instance {
 	return &Instance{
 		BaseURL:   config.BaseURL,

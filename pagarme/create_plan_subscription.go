@@ -8,6 +8,7 @@ import (
 	"github.com/lucchesisp/pagarme-go/types"
 )
 
+//CreatePlanSubscription creates a new plan subscription
 func (i *Instance) CreatePlanSubscription(ctx context.Context, plan *types.PlanSubscription) (string, error) {
 	payloadByte, _ := json.Marshal(plan)
 

@@ -1,5 +1,6 @@
 package types
 
+// PlanSubscription is a struct that represents a plan subscription
 type PlanSubscription struct {
 	Code                 string       `json:"code"`
 	PlanID               string       `json:"plan_id"`
