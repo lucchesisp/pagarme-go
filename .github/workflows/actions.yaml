@@ -38,7 +38,7 @@ jobs:
           go-version: '1.18.0'
 
       - name: Run Unit Tests
-        run: go test -race -covermode atomic -coverprofile=covprofile ./...
+        run: go test -race -covermode atomic -coverprofile=covprofile ./... -test.paniconexit0
 
       - name: Install Goveralls
         run: go install github.com/mattn/goveralls@latest
