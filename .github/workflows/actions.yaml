@@ -1,5 +1,5 @@
 name: Quality Gate
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   Dependencies:
     runs-on: ubuntu-latest
