@@ -2,8 +2,8 @@ package pagarme
 
 import (
 	"context"
-	"fmt"
 	"github.com/lucchesisp/pagarme-go/enums/config"
+	"github.com/lucchesisp/pagarme-go/errors"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -38,7 +38,10 @@ type Instance struct {
 // Dial creates a new pagarme client
 func Dial(secretKey string) (*Instance, error) {
 	if len(secretKey) == 0 {
-		return nil, fmt.Errorf("secretKey is empty")
+		return nil, &errors.Error{
+			ErrorCode:    400,
+			ErrorMessage: errors.SecretKeyRequired,
+		}
 	}
 
 	return DialContext(context.Background(), secretKey), nil
@@ -48,6 +51,14 @@ func Dial(secretKey string) (*Instance, error) {
 func DialContext(ctx context.Context, secretKey string) *Instance {
 	return &Instance{
 		Context:   ctx,
+		BaseURL:   config.BaseURL,
+		SecretKey: secretKey,
+	}
+}
+
+// DialWithoutContext creates a new pagarme client without context
+func DialWithoutContext(secretKey string) *Instance {
+	return &Instance{
 		BaseURL:   config.BaseURL,
 		SecretKey: secretKey,
 	}

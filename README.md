@@ -30,11 +30,11 @@ This library covers the following features:
 
 - Create card
 - Read card
-- Delete card [Pending]
+- Delete card
 
 [Plans]
 
-- Create plan [Pending]
+- Create plan
 - Edit plan [Pending]
 - Delete plan [Pending]
 - Get plan [Pending]
@@ -43,7 +43,7 @@ This library covers the following features:
 [Subscribe]
 
 - Create subscribe [Pending]
-- Create subscribe with plan [Pending]
+- Create subscribe with plan
 - Edit subscribe [Pending]
 - Cancel subscribe [Pending]
 
