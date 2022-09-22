@@ -7,4 +7,6 @@ const (
 	CardIDRequired = "CARD_ID_REQUIRED"
 	// PageAndSizeRequired is a constant for the page and size required error.
 	PageAndSizeRequired = "PAGE_AND_SIZE_REQUIRED"
+	// SecretKeyRequired is a constant for the secret key required error.
+	SecretKeyRequired = "SECRET_KEY_REQUIRED"
 )
