@@ -13,4 +13,5 @@ type PlanSubscription struct {
 	Increments           *[]Increment `json:"increments"`
 	GatewayAffiliationID string       `json:"gateway_affiliation_id"`
 	BoletoDueDays        string       `json:"boleto_due_days"`
+	Split                *[]Split     `json:"split"`
 }
